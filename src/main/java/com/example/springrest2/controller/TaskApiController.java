@@ -2,6 +2,7 @@ package com.example.springrest2.controller;
 
 import com.example.springrest2.domain.Task;
 import com.example.springrest2.dto.TaskCreateRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,16 @@ public class TaskApiController {
 
     // GET /api/tasks/{id} - 할 일 조회
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskStore.get(id);
+//    public Task getTaskById(@PathVariable Long id) {
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+//        return taskStore.get(id); // 없으면 그냥 null이 나가고 있음
+        Task task = taskStore.get(id);
+        if (task != null) {
+//            return task;
+            return ResponseEntity.ok(task);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // PUT /api/tasks/{id} - 할 일 수정
