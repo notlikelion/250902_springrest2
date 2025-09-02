@@ -2,6 +2,7 @@ package com.example.springrest2.controller;
 
 import com.example.springrest2.domain.Task;
 import com.example.springrest2.dto.TaskCreateRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +19,15 @@ public class TaskApiController {
 
     // POST /api/tasks - 할 일 생성
     @PostMapping
-    public Task createTask(@RequestBody TaskCreateRequest request) {
+//    public Task createTask(@RequestBody TaskCreateRequest request) {
+    public ResponseEntity<Task> createTask(@RequestBody TaskCreateRequest request) {
         long id = sequence.incrementAndGet(); // 1
         Task task = new Task(id, request.title(), false);
         taskStore.put(id, task);
-        return task;
+//        return task;
+        return ResponseEntity.status(HttpStatus.CREATED).body(task);
+//        return ResponseEntity.status(201).body(task);
+//        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     // GET /api/tasks - 할 일 전체 조회
@@ -54,7 +59,9 @@ public class TaskApiController {
 
     // DELETE /api/tasks/{id} - 할 일 삭제
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+//    public void deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskStore.remove(id);
+        return ResponseEntity.noContent().build();
     }
 }
