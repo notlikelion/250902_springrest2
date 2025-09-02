@@ -2,10 +2,7 @@ package com.example.springrest2.controller;
 
 import com.example.springrest2.domain.Task;
 import com.example.springrest2.dto.TaskCreateRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,5 +21,24 @@ public class TaskApiController {
         Task task = new Task(id, request.title(), false);
         taskStore.put(id, task);
         return task;
+    }
+
+    // GET /api/tasks/{id} - 할 일 조회
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        return taskStore.get(id);
+    }
+
+    // PUT /api/tasks/{id} - 할 일 수정
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        taskStore.put(id, updatedTask);
+        return updatedTask;
+    }
+
+    // DELETE /api/tasks/{id} - 할 일 삭제
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable Long id) {
+        taskStore.remove(id);
     }
 }
