@@ -4,6 +4,7 @@ import com.example.springrest2.domain.Task;
 import com.example.springrest2.dto.TaskCreateRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,6 +22,12 @@ public class TaskApiController {
         Task task = new Task(id, request.title(), false);
         taskStore.put(id, task);
         return task;
+    }
+
+    // GET /api/tasks - 할 일 전체 조회
+    @GetMapping
+    public List<Task> getTasks() {
+        return taskStore.values().stream().toList();
     }
 
     // GET /api/tasks/{id} - 할 일 조회
